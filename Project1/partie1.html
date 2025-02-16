@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM Élégant</title>
+    <style>
+        /* Style général */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        /* Conteneur principal */
+        .form-container {
+            width: 600px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+   
+        .scr {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        /* Timer */
+        .time {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff4757;
+            margin-bottom: 20px;
+        }
+
+        /* Question */
+        .quest {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* Réponses */
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .answers label {
+            display: flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .answers label:hover {
+            background-color: #e9ecef;
+            border-color: #6a11cb;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #6a11cb;
+        }
+
+        /* Bouton Suivant */
+        #nextBtn {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        #nextBtn:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+        }
+
+        /* Feedback */
+        .fdbck {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fdbck.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .fdbck.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        /* Résultat final */
+        .res {
+            font-size: 26px;
+            font-weight: bold;
+            color: #6a11cb;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="form-container">
+        <div class="scr" id="score">Score : 0</div>
+        <div class="time" id="timer">Temps restant : 10</div>
+        <div class="quest" id="question">Question ici</div>
+        <div class="answers">
+            <label for="answer1">
+                <input type="radio" name="answer" id="answer1">
+                <span>Réponse 1</span>
+            </label>
+            <label for="answer2">
+                <input type="radio" name="answer" id="answer2">
+                <span>Réponse 2</span>
+            </label>
+            <label for="answer3">
+                <input type="radio" name="answer" id="answer3">
+                <span>Réponse 3</span>
+            </label>
+            <label for="answer4">
+                <input type="radio" name="answer" id="answer4">
+                <span>Réponse 4</span>
+            </label>
+        </div>
+        <div class="fdbck" id="feedback"></div>
+        <button id="nextBtn">Suivant</button>
+        <div class="res" id="result"></div>
+    </div>
+
+    <script>
+        let score = 0;
+        let currentQuestionIndex = 0;
+        let timerInterval;
+
+        const questions = [
+            {
+                question: "Quel est le langage de programmation le plus utilisé en 2023 ?",
+                answers: ["Python", "JavaScript", "Java", "C++"],
+                correctAnswer: 1,
+                time: 15
+            },
+            {
+                question: "Quel est le système d'exploitation le plus utilisé sur les serveurs web ?",
+                answers: ["Windows Server", "Linux", "macOS", "Unix"],
+                correctAnswer: 2,
+                time: 20
+            },
+            {
+                question: "Quel est le framework JavaScript le plus populaire ?",
+                answers: ["Angular", "React", "Vue.js", "Svelte"],
+                correctAnswer: 2,
+                time: 15
+            },
+    
+        ];
+
+        const scrElement = document.getElementById("score");
+        const questionElement = document.getElementById("question");
+        const answerElements = document.querySelectorAll('.answers input');
+        const nextBtn = document.getElementById("nextBtn");
+        const timerElement = document.getElementById("timer");
+        const feedbackElement = document.getElementById("feedback");
+        const resultElement = document.getElementById("result");
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            
+            answerElements.forEach((input, index) => {
+                input.checked = false;
+                document.querySelector(`label[for="${input.id}"] span`).textContent = currentQuestion.answers[index];
+            });
+
+            startTimer(currentQuestion.time);  
+            feedbackElement.style.display = "none"; 
+        }
+
+        function calculateScore() {
+    const selectedAnswer = Array.from(answerElements).find(input => input.checked);
+    const currentQuestion = questions[currentQuestionIndex];
+    
+    if (selectedAnswer) {
+        const selectedAnswerIndex = Array.from(answerElements).indexOf(selectedAnswer);
+        if (selectedAnswerIndex === currentQuestion.correctAnswer) {
+            score++;
+            feedbackElement.textContent = "Correct !";
+            feedbackElement.className = "fdbck correct"; 
+            feedbackElement.textContent = "Incorrect !";
+            feedbackElement.className = "fdbck incorrect"; 
+        }
+    } else {
+        feedbackElement.textContent = "Aucune réponse sélectionnée !";
+        feedbackElement.className = "fdbck incorrect"; 
+    }
+    
+    feedbackElement.style.display = "block";
+    scrElement.textContent = `Score : ${score}`; 
+}
+
+function startTimer(time) {
+    let timeLeft = time;
+    timerElement.textContent = `Temps restant : ${timeLeft}`;
+
+    clearInterval(timerInterval);  
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = `Temps restant : ${timeLeft}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            nextBtn.click();  
+        }
+    }, 1000);
+}
+
+function showFinalResult() {
+    clearInterval(timerInterval); 
+    nextBtn.style.display = "none"; 
+    resultElement.textContent = `Quiz terminé ! Votre score final est : ${score}/${questions.length}`;
+    resultElement.style.display = "block"; 
+}
+
+nextBtn.addEventListener("click", () => {
+    calculateScore();
+    currentQuestionIndex++;
+    
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+    } else {
+        showFinalResult();
+    }
+});
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>

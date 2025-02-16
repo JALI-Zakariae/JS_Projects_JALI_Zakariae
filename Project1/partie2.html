@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Élégant</title>
+    <style>
+        /* Style général */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        /* Conteneur principal */
+        .container {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Titre */
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            color: #6a11cb;
+            margin-bottom: 20px;
+        }
+
+        /* Groupe de formulaire */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group select, .form-group input, .form-group button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select:hover, .form-group select:focus,
+        .form-group input:hover, .form-group input:focus {
+            border-color: #6a11cb;
+            background-color: #ffffff;
+        }
+
+        .form-group button {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        .form-group button:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+        }
+
+        /* Conteneur du quiz */
+        #quizContainer {
+            display: none;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 600px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Style des questions */
+        .question {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .question p {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .question label {
+            display: block;
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .question label:hover {
+            background-color: #e9ecef;
+            border-color: #6a11cb;
+        }
+
+        .question input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #6a11cb;
+        }
+
+        /* Timer */
+        .timer {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff4757;
+            margin-bottom: 20px;
+        }
+
+        /* Bouton de soumission */
+        #submitQuiz {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        #submitQuiz:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Configurer votre quiz</h1>
+        <form id="quizConfigForm">
+            <div class="form-group">
+                <label for="category">Catégorie :</label>
+                <select id="category">
+                    <option value="9">Général</option>
+                    <option value="10">Livres</option>
+                    <option value="11">Films</option>
+                    <option value="12">Musique</option>
+                    <option value="17">Science: Informatique</option>
+                    <option value="18">Science: Mathématiques</option>
+                    <option value="21">Sports</option>
+                    <option value="22">Géographie</option>
+                    <option value="23">Histoire</option>
+                    <option value="24">Politique</option>
+                    <option value="25">Art</option>
+                    <option value="27">Animaux</option>
+                    <option value="28">Véhicules</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="difficulty">Difficulté :</label>
+                <select id="difficulty">
+                    <option value="easy">Facile</option>
+                    <option value="medium">Moyenne</option>
+                    <option value="hard">Difficile</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="type">Type de questions :</label>
+                <select id="type">
+                    <option value="multiple">QCM</option>
+                    <option value="boolean">Vrai/Faux</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="numQuestions">Nombre de questions :</label>
+                <input type="number" id="numQuestions" min="1" max="50" value="5">
+            </div>
+            <div class="form-group">
+                <label for="encoding">Type d'encodage :</label>
+                <select id="encoding">
+                    <option value="utf8">UTF-8</option>
+                    <option value="base64">Base64</option>
+                    <option value="rot13">ROT13</option>
+                </select>
+            </div>
+            <button type="submit">Démarrer le quiz</button>
+        </form>
+    </div>
+
+    <div id="quizContainer">
+    </div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let timerInterval;
+        let timeLeft;
+        document.getElementById('quizConfigForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const category = document.getElementById('category').value;
+            const difficulty = document.getElementById('difficulty').value;
+            const type = document.getElementById('type').value;
+            const numQuestions = document.getElementById('numQuestions').value;
+            const encoding = document.getElementById('encoding').value;
+            fetchQuestions(category, difficulty, type, numQuestions, encoding);
+        });
+     e
+        function fetchQuestions(category, difficulty, type, numQuestions, encoding) {
+            const apiUrl = `https://opentdb.com/api.php?amount=${numQuestions}&category=${category}&difficulty=${difficulty}&type=${type}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quizConfigForm').style.display = 'none';
+                    const quizContainer = document.getElementById('quizContainer');
+                    quizContainer.style.display = 'block';
+
+                    const encodedQuestions = data.results.map(question => {
+                        return {
+                            ...question,
+                            question: encodeText(question.question, encoding),
+                            correct_answer: encodeText(question.correct_answer, encoding),
+                            incorrect_answers: question.incorrect_answers.map(answer => encodeText(answer, encoding))
+                        };
+                    });
+
+
+                    displayQuestions(encodedQuestions);
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des questions:', error);
+                });
+        }
+
+
+        function encodeText(text, encoding) {
+            switch (encoding) {
+                case 'base64':
+                    return btoa(text);
+                case 'rot13':
+                    return text.replace(/[a-zA-Z]/g, function(c) {
+                        return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+                    });
+                default:
+                    return text; 
+            }
+        }
+
+   
+        function displayQuestions(questions) {
+            const quizContainer = document.getElementById('quizContainer');
+            quizContainer.innerHTML = ''; 
+
+            
+            showQuestion(questions, 0);
+        }
+
+
+        function showQuestion(questions, index) {
+            const quizContainer = document.getElementById('quizContainer');
+            quizContainer.innerHTML = ''; 
+
+            const question = questions[index];
+
+            
+            const timerElement = document.createElement('div');
+            timerElement.classList.add('timer');
+            timerElement.textContent = `Temps restant : 10`;
+            quizContainer.appendChild(timerElement);
+
+          
+            startTimer(10, () => {
+                if (index < questions.length - 1) {
+                    showQuestion(questions, index + 1); 
+                } else {
+                    calculateScore(questions); 
+                }
+            });
+
+           
+            const questionElement = document.createElement('div');
+            questionElement.classList.add('question');
+            
+            const questionText = document.createElement('p');
+            questionText.textContent = `${index + 1}. ${question.question}`;
+            questionElement.appendChild(questionText);
+
+            const answersContainer = document.createElement('div');
+            if (question.type === 'multiple') {
+                const allAnswers = [...question.incorrect_answers, question.correct_answer];
+                allAnswers.sort(() => Math.random() - 0.5);  
+
+                allAnswers.forEach(answer => {
+                    const label = document.createElement('label');
+                    label.textContent = answer;
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `question${index}`;
+                    radio.value = answer;
+                    label.prepend(radio);
+                    answersContainer.appendChild(label);
+                    answersContainer.appendChild(document.createElement('br'));
+                });
+            } else {
+      
+                const trueButton = document.createElement('input');
+                trueButton.type = 'radio';
+                trueButton.name = `question${index}`;
+                trueButton.value = 'True';
+                answersContainer.appendChild(trueButton);
+                answersContainer.appendChild(document.createTextNode('Vrai'));
+                answersContainer.appendChild(document.createElement('br'));
+                
+                const falseButton = document.createElement('input');
+                falseButton.type = 'radio';
+                falseButton.name = `question${index}`;
+                falseButton.value = 'False';
+                answersContainer.appendChild(falseButton);
+                answersContainer.appendChild(document.createTextNode('Faux'));
+                answersContainer.appendChild(document.createElement('br'));
+            }
+
+            questionElement.appendChild(answersContainer);
+            quizContainer.appendChild(questionElement);
+
+            
+            if (index < questions.length - 1) {
+                const nextButton = document.createElement('button');
+                nextButton.textContent = 'Question suivante';
+                nextButton.addEventListener('click', () => {
+                    clearInterval(timerInterval); 
+                    showQuestion(questions, index + 1);
+                });
+                quizContainer.appendChild(nextButton);
+            } else {
+                const submitButton = document.createElement('button');
+                submitButton.textContent = 'Soumettre les réponses';
+                submitButton.addEventListener('click', () => {
+                    clearInterval(timerInterval); 
+                    calculateScore(questions); 
+                });
+                quizContainer.appendChild(submitButton);
+            }
+        }
+        function startTimer(time, callback) {
+            timeLeft = time;
+            const timerElement = document.querySelector('.timer');
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = `Temps restant : ${timeLeft}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    callback(); 
+                }
+            }, 1000);
+        }
+        function calculateScore(questions) {
+            let score = 0;
+            questions.forEach((question, index) => {
+                const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === question.correct_answer) {
+                    score++;
+                }
+            });
+
+            alert(`Votre score est : ${score} / ${questions.length}`);
+        }
+    </script>
+
+</body>
+</html>
