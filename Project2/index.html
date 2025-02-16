@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Todo List</title>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="text-center text-light my-4">
+        <h1 class="mb-4">Todo List</h1>
+        <div class="search">
+            <input class="form-control m-auto" type="text" name="search" placeholder="search todos" id = "search"/>
+        </div>
+    </header>
+
+    <ul class="list-group  todos mx-auto text-light" id = "todo">
+         
+    </ul>
+
+    <div >
+        <label class="text-light" class = "tst">Add a new todo...</label>
+        <input class="form-control m-auto" type="text" name="add" id="tache"/>
+        <button type="button" class="btn btn-primary my-2" id="submit-btn">Add Task</button>
+        <button type="button" class="btn btn-secondary my-2" id="reset-btn">Reset</button>
+    </div>
+    <script>
+        const submit = document.getElementById("submit-btn");
+        const reset = document.getElementById("reset-btn");
+        const tache = document.getElementById("tache");
+        const todoslist = document.getElementById("todo");
+        
+        function updateSearch() {
+            const tasks = document.querySelectorAll(".todos li");
+            const searchInput = document.getElementById("search").value.toLowerCase();
+                tasks.forEach(task => {
+        const task1 = task.querySelector("span").textContent.toLowerCase();
+        if (!task1.startsWith(searchInput)) {
+            task.style.display= "none"; 
+            return;
+        } else {
+            task.style.display= "flex"; 
+            return;
+        }
+    });}
+        
+  
+        
+        submit.addEventListener('click',function(){
+            text_tache = tache.value.trim();
+            if (text_tache !== ""){
+                const adding= `
+                    <li class="list-group-item " >
+                        <span>${text_tache}</span>
+                        <i class="far fa-trash-alt delete" ></i>
+                    </li>
+                `;
+               
+                todoslist.insertAdjacentHTML("beforeend", adding);   
+                tache.value = "";
+                const last = document.querySelectorAll(".delete");
+                const lasti = last[last.length-1];
+
+                lasti.addEventListener("click", function(event){
+                    const li_m = event.target.closest("li");
+                    li_m.remove();
+                });
+                updateSearch();
+             
+            }
+            
+            
+        });
+        reset.addEventListener('click', function () {
+            tache.value = "";
+        });
+        
+
+        document.getElementById("search").addEventListener("input",updateSearch);
+    
+
+
+
+
+        
+    
+     
+        
+        
+       
+        
+
+    </script>
+
+</div>
