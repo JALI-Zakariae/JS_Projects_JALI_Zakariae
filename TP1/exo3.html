@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercice 5 - Champ de saisie sans espace</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #app {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 400px;
+    }
+
+    h1 {
+      color: #42b983;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #42b983;
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none; 
+    }
+
+    .error-message.visible {
+      display: block; 
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Saisie de texte sans espace</h1>
+    <input
+      type="text"
+      v-model="texte"
+      @input="verifierEspace"
+      placeholder="Saisissez une chaîne sans espace"
+    />
+    <p :class="{ 'error-message': true, 'visible': afficherErreur }">
+      ⚠️ La chaîne ne doit pas contenir d'espace.
+    </p>
+  </div>
+
+  <script>
+
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          texte: "", 
+          afficherErreur: false 
+        };
+      },
+      methods: {
+
+        verifierEspace() {
+          if (this.texte.includes(" ")) {
+            this.afficherErreur = true; 
+          } else {
+            this.afficherErreur = false; 
+          }
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

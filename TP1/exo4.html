@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Exercice 1 - Manipulation de vue</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+ 
+    .hidden {
+      display: none;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #monapp {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+    label {
+      margin-right: 10px;
+    }
+    div {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div id="monapp">
+    <div>
+      <label>
+        <input type="radio" v-model="textColor" value="red" />
+        Rouge
+      </label>
+      <label>
+        <input type="radio" v-model="textColor" value="green" />
+        Vert
+      </label>
+      <label>
+        <input type="radio" v-model="textColor" value="blue" />
+        Bleu
+      </label>
+      <label>
+        <input type="radio" v-model="textColor" value="purple" />
+        Violet
+      </label>
+      <label>
+        <input type="radio" v-model="textColor" value="black" />
+        Noir
+      </label> 
+    </div>
+    <div>
+      Cacher le texte:
+      <input type="checkbox" v-model="cacher">
+    </div>
+
+   
+    <div :style="{ color: textColor }" :class="{'hidden': cacher}">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis excepturi saepe maxime asperiores illum fugiat provident similique dicta voluptatum iure accusantium ratione voluptatem commodi libero vel dolore, vitae dignissimos sint!
+    </div>
+  </div>
+
+  <script>
+   
+    const appli = {
+      data() {
+        return {
+          textColor: "", 
+          cacher: false 
+        };
+      }
+    };
+
+    Vue.createApp(appli).mount("#monapp");
+  </script>
+</body>
+</html>

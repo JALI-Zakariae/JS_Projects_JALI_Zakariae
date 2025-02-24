@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercice 4 - Compteur interactif</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+  
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #app {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      color: #42b983;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .counter-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .counter-value {
+      font-size: 48px;
+      font-weight: bold;
+      color: #333;
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 10px;
+      min-width: 100px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      background-color: #42b983;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #369c6e;
+      transform: scale(1.05);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .btn-decrement {
+      background-color: #ff6b6b;
+    }
+
+    .btn-decrement:hover {
+      background-color: #ff4c4c;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Compteur interactif</h1>
+    <div class="counter-container">
+   
+      <button class="btn-decrement" @click="decrementer">--</button>
+      <div class="counter-value">{{ compteur }}</div>
+      <button @click="incrementer">++</button>
+    </div>
+  </div>
+
+  <script>
+    
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          
+          compteur: 0
+        };
+      },
+      methods: {
+        
+        incrementer() {
+          this.compteur++;
+        },
+        
+        decrementer() {
+          this.compteur--;
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

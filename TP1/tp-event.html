@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Manipulation de vue</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    .firstclass {
+      display: block; /* Affiche le message par défaut */
+    }
+     .hidden {
+      display: none; /* Cache le message quand 'isActive' est false */
+    }
+  </style>
+</head>
+<body>
+
+<div id="monapp">
+  <button @click="changertitre">{{ titre }}</button>
+  <div style="display: flex; flex-direction: row;">
+    <button @click="augmenter">++</button>
+    {{ compteur }}
+    <button @click="diminuer">--</button>
+  </div>  
+
+  <input type="text" v-model="text" @input="verifierEspace">
+  
+  <p :class="{ 'hidden': !isActive}">vous devez pas entrer un espace</p>
+</div>
+
+<script>
+  const appli = {
+    data() {
+      return {
+        titre: "Cliquez moi!",
+        compteur: 0,
+        text: "",
+        isActive: false // Initialement, on cache le message
+      };
+    },
+    methods: {
+      changertitre() {
+        this.titre = "Clique";
+      },
+      augmenter() {
+        this.compteur += 1;
+      },
+      diminuer() {
+        this.compteur -= 1;
+      },
+      verifierEspace() {
+        // Si le texte contient un espace, on affiche le message
+        this.isActive = this.text.includes(" ");
+      }
+    }
+  };
+
+  Vue.createApp(appli).mount("#monapp");
+</script>
+
+</body>
+</html>
+
