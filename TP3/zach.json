@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "title": "Faire les courses",
+      "description": "Acheter des fruits et légumes",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "Réviser Vue.js",
+      "description": "Relire la documentation et faire des exercices",
+      "completed": true
+    },
+    {
+      "id": 3,
+      "title": "Faire du sport",
+      "description": "30 minutes de jogging",
+      "completed": false
+    }
+    
+  ]

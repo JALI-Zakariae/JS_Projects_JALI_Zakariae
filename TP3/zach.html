@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des Tâches avec Vue.js</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .task-list {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #42b983;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    .filters button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    .filters button.active {
+      background-color: #42b983;
+      color: white;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #f9f9f9;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    li.completed {
+      background-color: #e0f7fa;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      color: #42b983;
+    }
+
+    p {
+      margin: 0 0 10px;
+      color: #666;
+    }
+
+    button {
+      background-color: #42b983;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #369c6e;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="task-list">
+      <h1>Gestion des Tâches</h1>
+      <div class="filters">
+        <button 
+          @click="filter = 'all'" 
+          :class="{ active: filter === 'all' }"
+        >
+          Toutes
+        </button>
+        <button 
+          @click="filter = 'todo'" 
+          :class="{ active: filter === 'todo' }"
+        >
+          À faire
+        </button>
+        <button 
+          @click="filter = 'done'" 
+          :class="{ active: filter === 'done' }"
+        >
+          Terminées
+        </button>
+      </div>
+      <ul>
+        <li v-for="task in filteredTasks" :key="task.id" :class="{ completed: task.completed }">
+          <h3>{{ task.title }}</h3>
+          <p>{{ task.description }}</p>
+          <button 
+            v-show="!task.completed" 
+            @click="markAsCompleted(task.id)"
+          >
+            Marquer comme terminée
+          </button>
+        </li>
+      </ul>
+      <p>Total des tâches : {{ totalTasks }}</p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          tasks: [],
+          filter: 'all'
+        };
+      },
+      computed: {
+        filteredTasks() {
+          if (this.filter === 'todo') {
+            return this.tasks.filter(task => !task.completed);
+          } else if (this.filter === 'done') {
+            return this.tasks.filter(task => task.completed);
+          } else {
+            return this.tasks;
+          }
+        },
+        totalTasks() {
+          return this.tasks.length;
+        }
+      },
+      methods: {
+        markAsCompleted(taskId) {
+          const task = this.tasks.find(task => task.id === taskId);
+          if (task) {
+            task.completed = true;
+          }
+        }
+      },
+      async created() {
+        try {
+          const response = await fetch('zach.json');
+          this.tasks = await response.json();
+        } catch (error) {
+          console.error('Erreur lors du chargement des tâches :', error);
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
