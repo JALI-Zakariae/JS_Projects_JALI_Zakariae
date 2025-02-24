@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet 1-38</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        img {
+            float: left;
+            margin-right: 1rem;
+        }
+        .personne {
+            clear: left;
+            padding: 1rem;
+        }
+        input[type="checkbox"], select {
+            margin-right: 1rem;
+        }
+        .misEnForme {
+            background: #e0ffff;
+            font-family: georgia;
+            font-size: 1.2rem;
+            margin: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <fieldset>
+            <legend>Filtre sur le nom</legend>
+            <input type="text" v-model="filtreNom">
+        </fieldset>
+        <fieldset>
+            <legend>Options</legend>
+            Homme <input type="checkbox" v-model="homme">
+            Femme <input type="checkbox" v-model="femme">
+            Téléphone <input type="checkbox" v-model="tel">
+            Email <input type="checkbox" v-model="email">
+            Photo
+            <select v-model="taille">
+                <option value="1">Petit</option>
+                <option value="2">Moyen</option>
+                <option value="3">Grand</option>
+            </select>
+            Mise en forme <input type="checkbox" v-model="mef">
+        </fieldset>
+        <div class="personne" v-for="p in filteredPersons" :class="{'misEnForme': mef}">
+            <div>
+                <img :src="p.picture[tailleMap[taille]]">
+                {{ p.name.title }} {{ p.name.first }} {{ p.name.last }}<br>
+                <div v-if="tel">{{ p.phone }}</div>
+                <div v-if="email">{{ p.email }}</div>
+                <div>{{ p.location.country }}</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    homme: true,
+                    femme: true,
+                    tel: false,
+                    email: false,
+                    mef: false,
+                    taille: 2,
+                    filtreNom: '',
+                    tailleMap: {1: 'thumbnail', 2: 'medium', 3: 'large'},
+                    personnes: [] 
+                };
+            },
+            computed: {
+                filteredPersons() {
+                    return this.personnes.filter(p =>
+                        ((this.homme && p.gender === 'male') || (this.femme && p.gender === 'female')) &&
+                        (p.name.last.toLowerCase().includes(this.filtreNom.toLowerCase()) || this.filtreNom === '')
+                    );
+                }
+            },
+            async created() {
+                try {
+ 
+                    const response = await fetch('personnes.json');
+                    this.personnes = await response.json();
+                } catch (error) {
+                    console.error('Erreur lors du chargement des données :', error);
+                }
+            }
+        });
+        app.mount('#app');
+    </script>
+</body>
+</html>
