@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+body {
+  max-width: 1200px;
+  margin: auto;
+  padding: 16px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #7451eb;
+  text-align: center;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header img {
+  height: 60px;
+  margin-left: 1rem;
+}
+
+header h1 {
+  flex-grow: 1;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.filtres {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 8px;
+  padding: 16px;
+  min-width: 300px;
+  background-color: white;
+}
+
+.filtres h3 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.filtres input[type="text"],
+.filtres select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.filtres label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.filtres input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.fiches {
+  flex: 1;
+  margin: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.fiches .fiche {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.fiches .fiche:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.fiches img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.fiches p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.fiches button {
+  background-color: #7451eb;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.fiches button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.fiches button:hover:not(:disabled) {
+  background-color: #5a3ec2;
+}
+
+.panier {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 8px;
+  padding: 16px;
+  min-width: 250px;
+  background-color: white;
+}
+
+.panier h3 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.panier ul {
+  list-style: none;
+  padding: 0;
+}
+
+.panier li {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.panier p {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: right;
+  margin-top: 16px;
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Les Bonnes Pièces</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <header>
+      <img src="images/logo-les-bonnes-pieces.png" alt="LOGO">
+      <h1>Les Bonnes Pièces</h1>
+    </header>
+    <main id="app">
+      <section class="filtres">
+        <h3>Filtres</h3>
+        <input type="text" v-model="recherche" placeholder="Rechercher par nom...">
+        <select v-model="cat">
+          <option value="">Sélectionner une catégorie</option>
+          <option value="Électricité">Électricité</option>
+          <option value="Filtration">Filtration</option>
+          <option value="Moteur">Moteur</option>
+          <option value="Freinage">Freinage</option>
+          <option value="Suspension">Suspension</option>
+          <option value="Carburant">Carburant</option>
+          <option value="Direction">Direction</option>
+          <option value="Transmission">Transmission</option>
+          <option value="Sécurité">Sécurité</option>
+          <option value="Carrosserie">Carrosserie</option>
+          <option value="Échappement">Échappement</option>
+        </select>
+        <label>
+          <input type="checkbox" v-model="disponible"> Seulement les pièces disponibles
+        </label>
+        <select v-model="triPrix">
+          <option value="asc">Prix croissant</option>
+          <option value="desc">Prix décroissant</option>
+        </select>
+      </section>
+
+      <section class="fiches">
+        <div v-if="filteredPieces.length > 0">
+          <div v-for="piece in filteredPieces" :key="piece.id">
+            <div class="fiche">
+              <img :src="piece.image" :alt="piece.nom">
+              <p>{{ piece.nom }}</p>
+              <p>{{ piece.prix }} €</p>
+              <p v-if="piece.disponible">Disponible</p>
+              <p v-else>Non disponible</p>
+              <button v-on:click="ajouterAuPanier(piece)" :disabled="!piece.disponible">Ajouter au panier</button>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          Aucun résultat trouvé.
+        </div>
+      </section>
+
+      <section class="panier">
+        <h3>Panier</h3>
+        <ul>
+          <li v-for="(item, index) in panier" :key="item.id">
+            {{ item.nom }} - {{ item.prix }} €
+            <button @click="supprimerDuPanier(index)">Supprimer</button>
+          </li>
+        </ul>
+        <p v-if="panier.length > 0">Total: {{ totalPanier }} €</p>
+      </section>
+    </main>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            pieces_auto: [],
+            recherche: "",  
+            cat: "",         
+            disponible: false, 
+            triPrix: "asc",  
+            panier: []        
+          };
+        },
+        mounted() {
+    
+          fetch("pieces-autos.json")
+            .then((response) => response.json())
+            .then((data) => {
+              this.pieces_auto = data;
+            })
+            .catch((error) =>
+              console.log("Erreur lors du chargement de la liste : ", error)
+            );
+        },
+        computed: {
+          filteredPieces() {
+
+            let pieces = this.pieces_auto.filter((p) => {
+              const matchesNom = p.nom.toLowerCase().includes(this.recherche.toLowerCase());
+              const matchesCategorie = this.cat ? p.categorie === this.cat : true;
+              const matchesDisponibilite = this.disponible ? p.disponible === true : true;
+
+              return matchesNom && matchesCategorie && matchesDisponibilite;
+            });
+
+    
+            if (this.triPrix === "asc") {
+              pieces.sort((a, b) => a.prix - b.prix);
+            } else {
+              pieces.sort((a, b) => b.prix - a.prix);
+            }
+
+            return pieces;
+          },
+          totalPanier() {
+            return this.panier.reduce((total, item) => total + item.prix, 0);
+          }
+        },
+        methods: {
+          ajouterAuPanier(piece) {
+            this.panier.push(piece);
+          },
+          supprimerDuPanier(index) {
+            this.panier.splice(index, 1); 
+          }
+        }
+      });
+      app.mount('#app');
+    </script>
+  </body>
+</html>
+
+
