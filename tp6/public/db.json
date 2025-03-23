@@ -1,0 +1,16 @@
+{
+    "posts": [
+      {
+        "id": 1,
+        "title": "Introduction à Vue.js",
+        "body": "Vue.js est un framework JavaScript progressif pour construire des interfaces utilisateur.",
+        "tags": ["Vue.js", "JavaScript"]
+      },
+      {
+        "id": 2,
+        "title": "Comprendre JSON Server",
+        "body": "JSON Server est un outil simple pour créer une API RESTful à partir d'un fichier JSON.",
+        "tags": ["JSON Server", "API"]
+      }
+    ]
+  }
