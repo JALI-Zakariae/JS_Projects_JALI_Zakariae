@@ -1,0 +1,20 @@
+{
+    "jobs": [
+      {
+        "id": 1,
+        "title": "Développeur Full Stack",
+        "description": "Nous recherchons un développeur full stack pour rejoindre notre équipe.",
+        "salary": "50000",
+        "createdAt": "2023-10-01",
+        "experience": "3 ans"
+      },
+      {
+        "id": 2,
+        "title": "Designer UX/UI",
+        "description": "Nous cherchons un designer UX/UI pour améliorer nos interfaces utilisateur.",
+        "salary": "45000",
+        "createdAt": "2023-09-25",
+        "experience": "2 ans"
+      }
+    ]
+  }
